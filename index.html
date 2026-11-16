@@ -1,0 +1,1071 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelVista</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">✦ TravelVista</div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#explore">Explore</a>
+        <a href="#planner">Trip Planner</a>
+        <a href="#features">Features</a>
+    </nav>
+
+    <button class="nav-btn" onclick="showPlanner()">
+        Plan a Trip ↗
+    </button>
+</header>
+
+<section class="hero" id="home">
+    <div class="hero-content">
+        <p class="eyebrow">YOUR NEXT JOURNEY STARTS HERE</p>
+
+        <h1>Discover the world.<br>
+            <span>Travel beyond limits.</span>
+        </h1>
+
+        <p class="hero-text">
+            Your personal intelligent travel companion.
+            Discover destinations, create itineraries and
+            make every journey unforgettable.
+        </p>
+
+        <div class="hero-actions">
+            <button onclick="showPlanner()">Start Planning ↗</button>
+            <a href="#explore">Explore Destinations</a>
+        </div>
+    </div>
+
+    <div class="hero-tag">
+        <span>✦</span>
+        Explore without limits
+    </div>
+</section>
+
+
+<section class="section" id="explore">
+
+    <p class="eyebrow">FIND YOUR NEXT DESTINATION</p>
+    <h2>Explore the world</h2>
+
+    <div class="explore-controls">
+        <input
+            type="text"
+            id="destinationSearch"
+            placeholder="Search destinations..."
+        >
+
+        <select id="categoryFilter">
+            <option value="all">All destinations</option>
+            <option value="beach">Beaches</option>
+            <option value="mountain">Mountains</option>
+            <option value="city">Cities</option>
+            <option value="culture">Culture</option>
+        </select>
+    </div>
+
+    <div class="destination-grid" id="destinationGrid">
+
+        <article class="destination"
+            data-name="Goa"
+            data-category="beach">
+            <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=900" alt="Goa">
+            <div>
+                <h3>Goa, India</h3>
+                <p>Beaches · Adventure</p>
+                <p>Estimated budget: ₹8,000</p>
+                <button onclick="showDestination('Goa')">Explore</button>
+                <button onclick="addFavourite('Goa')">♡ Save</button>
+            </div>
+        </article>
+
+        <article class="destination"
+            data-name="Jaipur"
+            data-category="culture">
+            <img src="https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?w=900" alt="Jaipur">
+            <div>
+                <h3>Jaipur, India</h3>
+                <p>Culture · History</p>
+                <p>Estimated budget: ₹6,000</p>
+                <button onclick="showDestination('Jaipur')">Explore</button>
+                <button onclick="addFavourite('Jaipur')">♡ Save</button>
+            </div>
+        </article>
+
+        <article class="destination"
+            data-name="Bangkok"
+            data-category="city">
+            <img src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=900" alt="Bangkok">
+            <div>
+                <h3>Bangkok, Thailand</h3>
+                <p>Food · Shopping</p>
+                <p>Estimated budget: ₹15,000</p>
+                <button onclick="showDestination('Bangkok')">Explore</button>
+                <button onclick="addFavourite('Bangkok')">♡ Save</button>
+            </div>
+        </article>
+
+        <article class="destination"
+            data-name="Manali"
+            data-category="mountain">
+            <img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=900" alt="Manali">
+            <div>
+                <h3>Manali, India</h3>
+                <p>Mountains · Adventure</p>
+                <p>Estimated budget: ₹10,000</p>
+                <button onclick="showDestination('Manali')">Explore</button>
+                <button onclick="addFavourite('Manali')">♡ Save</button>
+            </div>
+        </article>
+
+        <article class="destination"
+            data-name="Paris"
+            data-category="city">
+            <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=900" alt="Paris">
+            <div>
+                <h3>Paris, France</h3>
+                <p>Romance · Architecture</p>
+                <p>Estimated budget: ₹60,000</p>
+                <button onclick="showDestination('Paris')">Explore</button>
+                <button onclick="addFavourite('Paris')">♡ Save</button>
+            </div>
+        </article>
+
+        <article class="destination"
+            data-name="Bali"
+            data-category="beach">
+            <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=900" alt="Bali">
+            <div>
+                <h3>Bali, Indonesia</h3>
+                <p>Beaches · Nature</p>
+                <p>Estimated budget: ₹25,000</p>
+                <button onclick="showDestination('Bali')">Explore</button>
+                <button onclick="addFavourite('Bali')">♡ Save</button>
+            </div>
+        </article>
+
+    </div>
+
+    <div id="destinationDetails"></div>
+
+</section>
+
+
+
+<section class="planner-section" id="planner">
+
+    <div class="planner-heading">
+        <p class="eyebrow">YOUR PERSONAL TRAVEL ASSISTANT</p>
+        <h2>Create your perfect journey</h2>
+        <p>Tell us your travel preferences and generate your itinerary.</p>
+    </div>
+
+    <div class="trip-form">
+
+        <div class="form-group">
+            <label>Destination</label>
+            <input type="text" id="tripDestination"
+                   placeholder="Example: Goa">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Number of days</label>
+                <input type="number" id="tripDays"
+                       min="1" max="14" value="3">
+            </div>
+
+            <div class="form-group">
+                <label>Total budget (₹)</label>
+                <input type="number" id="tripBudget"
+                       min="500" value="10000">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Travel interests</label>
+            <div class="interest-options">
+                <label><input type="checkbox" value="Adventure"> Adventure</label>
+                <label><input type="checkbox" value="Nature"> Nature</label>
+                <label><input type="checkbox" value="Food"> Food</label>
+                <label><input type="checkbox" value="Culture"> Culture</label>
+                <label><input type="checkbox" value="Shopping"> Shopping</label>
+                <label><input type="checkbox" value="Relaxation"> Relaxation</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Travel pace</label>
+            <select id="tripPace">
+                <option value="Relaxed">Relaxed</option>
+                <option value="Balanced" selected>Balanced</option>
+                <option value="Packed">Packed</option>
+            </select>
+        </div>
+
+        <button class="generate-btn" onclick="generateTrip()">
+            ✦ Generate My Trip
+        </button>
+
+    </div>
+
+   
+<div id="tripResults"></div>
+
+<div class="pdf-export-area">
+    <button type="button" onclick="downloadTravelPDF()">
+        📄 Download My Itinerary PDF
+    </button>
+</div>
+
+
+</section>
+<!-- FEATURE 3: SMART BUDGET CALCULATOR -->
+<section class="section" id="budget">
+    <p class="eyebrow">MANAGE YOUR MONEY</p>
+    <h2>Smart Budget Calculator</h2>
+    <p>Track your travel expenses and stay within your budget.</p>
+
+    <div class="budget-form">
+        <div class="form-group">
+            <label for="totalBudget">Your total travel budget (₹)</label>
+            <input type="number" id="totalBudget" placeholder="Enter budget" min="1">
+        </div>
+
+        <h3>Add your expenses</h3>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="expenseName">Expense name</label>
+                <input type="text" id="expenseName" placeholder="e.g. Hotel">
+            </div>
+
+            <div class="form-group">
+                <label for="expenseAmount">Amount (₹)</label>
+                <input type="number" id="expenseAmount" placeholder="e.g. 2500" min="1">
+            </div>
+        </div>
+
+        <button type="button" onclick="addExpense()">Add Expense</button>
+
+        <div id="expenseList"></div>
+
+        <div class="budget-results">
+            <div>
+                <span>Total Budget</span>
+                <h3 id="budgetDisplay">₹0</h3>
+            </div>
+            <div>
+                <span>Total Spent</span>
+                <h3 id="spentDisplay">₹0</h3>
+            </div>
+            <div>
+                <span>Remaining</span>
+                <h3 id="remainingDisplay">₹0</h3>
+            </div>
+        </div>
+
+        <div class="budget-progress">
+            <div id="budgetProgressBar"></div>
+        </div>
+
+        <p id="budgetMessage">Enter your budget to get started.</p>
+    </div>
+</section>
+<!-- FEATURE 4: LIVE WEATHER -->
+<section class="section" id="weather">
+    <p class="eyebrow">WEATHER FOR YOUR JOURNEY</p>
+    <h2>Live Weather Forecast</h2>
+    <p>Check current weather and the upcoming 5-day forecast for your destination.</p>
+
+    <div class="weather-search">
+        <input type="text" id="weatherCity" placeholder="Enter a city (e.g. Bengaluru)">
+        <button type="button" onclick="getWeather()">Check Weather</button>
+    </div>
+
+    <p id="weatherStatus">Enter a city to view its weather.</p>
+
+    <div id="weatherCurrent"></div>
+    <div id="weatherForecast" class="weather-forecast"></div>
+</section>
+<!-- FEATURE 5: INTERACTIVE TRAVEL MAP -->
+<section class="section" id="travelMap">
+    <p class="eyebrow">DISCOVER PLACES ON THE MAP</p>
+    <h2>Interactive Travel Map</h2>
+    <p>Explore destinations around the world and find your next adventure.</p>
+
+    <div class="map-search">
+        <input
+            type="text"
+            id="mapCitySearch"
+            placeholder="Search a city (e.g. Tokyo)"
+        >
+        <button type="button" onclick="searchMapCity()">
+            Find Location
+        </button>
+    </div>
+
+    <p id="mapStatus">Choose a destination or search for a city.</p>
+
+    <div id="travelMapView"></div>
+
+    <div class="map-destinations">
+        <button type="button" onclick="focusDestination('Goa')">Goa</button>
+        <button type="button" onclick="focusDestination('Jaipur')">Jaipur</button>
+        <button type="button" onclick="focusDestination('Manali')">Manali</button>
+        <button type="button" onclick="focusDestination('Paris')">Paris</button>
+        <button type="button" onclick="focusDestination('Bali')">Bali</button>
+        <button type="button" onclick="focusDestination('Tokyo')">Tokyo</button>
+    </div>
+</section>
+<section class="section" id="features">
+    <p class="eyebrow">TRAVELVista EXPERIENCE</p>
+    <h2>Everything you need to travel smarter</h2>
+
+    <div class="feature-grid">
+        <div class="feature-card">✦<h3>Smart Planning</h3>
+            <p>Personalized travel itineraries.</p></div>
+        <div class="feature-card">⌖<h3>Interactive Maps</h3>
+            <p>Explore destinations and attractions.</p></div>
+        <div class="feature-card">◷<h3>Weather Updates</h3>
+            <p>Prepare for your destination.</p></div>
+        <div class="feature-card">◇<h3>Budget Tracking</h3>
+            <p>Manage your travel expenses.</p></div>
+    </div>
+</section>
+<!-- FEATURE 6: SAVED TRIPS -->
+<section class="section" id="savedTrips">
+    <p class="eyebrow">YOUR PERSONAL TRAVEL COLLECTION</p>
+    <h2>My Saved Trips</h2>
+    <p>Your favourite travel plans, saved in one place.</p>
+
+    <div id="savedTripsList" class="saved-trips-grid">
+        <p id="emptyTripsMessage">You haven't saved any trips yet.</p>
+    </div>
+</section>
+<!-- FEATURE 7: SMART PACKING ASSISTANT -->
+<section class="section" id="packing">
+    <p class="eyebrow">PACK SMARTER, TRAVEL BETTER</p>
+    <h2>Smart Packing Assistant</h2>
+    <p>Create your personalized packing checklist before your journey.</p>
+
+    <div class="packing-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="packingDestination">Destination</label>
+                <input type="text" id="packingDestination" placeholder="e.g. Manali">
+            </div>
+
+            <div class="form-group">
+                <label for="packingDays">Number of days</label>
+                <input type="number" id="packingDays" min="1" max="60" value="3">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="packingType">Travel type</label>
+            <select id="packingType">
+                <option value="general">General trip</option>
+                <option value="beach">Beach vacation</option>
+                <option value="adventure">Adventure trip</option>
+                <option value="business">Business trip</option>
+                <option value="winter">Winter vacation</option>
+            </select>
+        </div>
+
+        <button type="button" onclick="generatePackingList()">
+            Generate Packing List
+        </button>
+    </div>
+
+    <div id="packingResults" class="packing-results"></div>
+</section>
+<!-- FEATURE 8: TRAVEL SAFETY ASSISTANT -->
+<section class="section" id="safety">
+    <p class="eyebrow">TRAVEL SMART. STAY SAFE.</p>
+    <h2>Travel Safety Assistant</h2>
+    <p>Prepare for your journey with a personal safety checklist.</p>
+
+    <div class="safety-form">
+        <label for="safetyDestination">Your destination</label>
+        <input type="text" id="safetyDestination"
+               placeholder="Enter destination">
+
+        <button type="button" onclick="generateSafetyTips()">
+            Get Safety Guide
+        </button>
+    </div>
+
+    <div id="safetyResults"></div>
+
+    <div class="safety-contacts">
+        <h3>My Emergency Contacts</h3>
+        <p>Save useful contact details for your trip.</p>
+
+        <input type="text" id="contactName" placeholder="Contact name">
+        <input type="text" id="contactNumber" placeholder="Phone number">
+
+        <button type="button" onclick="saveSafetyContact()">
+            Save Contact
+        </button>
+
+        <div id="safetyContactList"></div>
+    </div>
+</section>
+<!-- FEATURE 9: DESTINATION COMPARISON -->
+<section class="section" id="comparison">
+    <p class="eyebrow">CHOOSE YOUR NEXT ADVENTURE</p>
+    <h2>Destination Comparison</h2>
+    <p>Compare destinations before deciding where to travel.</p>
+
+    <div class="comparison-form">
+        <div class="form-group">
+            <label for="compareFirst">First destination</label>
+            <select id="compareFirst">
+                <option value="Goa">Goa</option>
+                <option value="Jaipur">Jaipur</option>
+                <option value="Manali">Manali</option>
+                <option value="Paris">Paris</option>
+                <option value="Bali">Bali</option>
+                <option value="Tokyo">Tokyo</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="compareSecond">Second destination</label>
+            <select id="compareSecond">
+                <option value="Paris">Paris</option>
+                <option value="Goa">Goa</option>
+                <option value="Jaipur">Jaipur</option>
+                <option value="Manali">Manali</option>
+                <option value="Bali">Bali</option>
+                <option value="Tokyo">Tokyo</option>
+            </select>
+        </div>
+
+        <button type="button" onclick="compareDestinations()">
+            Compare Destinations
+        </button>
+    </div>
+
+    <div id="comparisonResults"></div>
+</section>
+
+<!-- FEATURE 10: GROUP TRIP PLANNER -->
+<section class="section" id="groupPlanner">
+
+    <p class="eyebrow">TRAVEL TOGETHER</p>
+    <h2>Group Trip Planner</h2>
+    <p>Create a group trip, invite your travel members and split the budget.</p>
+
+    <div class="group-form">
+
+        <div class="form-group">
+            <label for="groupTripName">Trip Name</label>
+            <input type="text" id="groupTripName" placeholder="Example: Summer Vacation">
+        </div>
+
+        <div class="form-group">
+            <label for="groupDestination">Destination</label>
+            <input type="text" id="groupDestination" placeholder="Example: Goa">
+        </div>
+
+        <div class="form-group">
+            <label for="groupBudget">Total Group Budget (₹)</label>
+            <input type="number" id="groupBudget" placeholder="Example: 30000" min="1">
+        </div>
+
+        <button type="button" onclick="createGroupTrip()">
+            + Create Group Trip
+        </button>
+    </div>
+
+    <div class="group-member-form">
+        <h3>Add Travel Members</h3>
+
+        <div class="form-group">
+            <label for="groupMemberName">Member Name</label>
+            <input type="text" id="groupMemberName" placeholder="Enter member name">
+        </div>
+
+        <div class="form-group">
+            <label for="groupMemberCount">Select Group Trip</label>
+            <select id="groupMemberCount">
+                <option value="">Select a trip</option>
+            </select>
+        </div>
+
+        <button type="button" onclick="addGroupMember()">
+            Add Member
+        </button>
+    </div>
+
+    <div id="groupTripResults"></div>
+
+</section>
+
+<!-- FEATURE 11: TRAVEL JOURNAL -->
+<section class="section" id="travelJournal">
+
+    <p class="eyebrow">YOUR JOURNEY, YOUR STORIES</p>
+    <h2>Travel Journal</h2>
+    <p>Capture your favourite travel memories and unforgettable experiences.</p>
+
+    <div class="journal-form">
+
+        <div class="form-group">
+            <label for="journalTitle">Memory Title</label>
+            <input type="text" id="journalTitle" placeholder="My unforgettable adventure">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="journalDestination">Destination</label>
+                <input type="text" id="journalDestination" placeholder="Goa">
+            </div>
+
+            <div class="form-group">
+                <label for="journalDate">Travel Date</label>
+                <input type="date" id="journalDate">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="journalRating">Rate Your Experience</label>
+            <select id="journalRating">
+                <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+                <option value="4">⭐⭐⭐⭐ Very Good</option>
+                <option value="3">⭐⭐⭐ Good</option>
+                <option value="2">⭐⭐ Fair</option>
+                <option value="1">⭐ Poor</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="journalMemory">Your Travel Story</label>
+            <textarea id="journalMemory" rows="5"
+                placeholder="Write about your favourite moments, places and experiences..."></textarea>
+        </div>
+
+        <button type="button" id="journalSaveButton" onclick="saveJournalEntry()">
+            Save Travel Memory
+        </button>
+
+        <button type="button" id="journalCancelButton"
+            onclick="cancelJournalEdit()" style="display:none;">
+            Cancel Edit
+        </button>
+
+    </div>
+
+    <div class="journal-heading">
+        <h3>Your Travel Memories</h3>
+        <span id="journalCount">0 Memories</span>
+    </div>
+
+    <div id="journalEntries" class="journal-grid"></div>
+
+</section>
+
+<!-- FEATURE 13: FLIGHT & HOTEL ORGANIZER -->
+
+<section class="section" id="bookingOrganizer">
+
+    <p class="eyebrow">YOUR BOOKINGS, ONE PLACE</p>
+    <h2>Flight & Hotel Organizer</h2>
+    <p>Organize your travel reservations and keep important booking details handy.</p>
+
+    <div class="booking-form">
+
+        <div class="form-group">
+            <label for="bookingType">Booking Type</label>
+            <select id="bookingType">
+                <option value="Flight">Flight</option>
+                <option value="Hotel">Hotel</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="bookingName">Airline / Hotel Name</label>
+            <input type="text" id="bookingName" placeholder="Example: Air India / Taj Hotel">
+        </div>
+
+        <div class="form-group">
+            <label for="bookingReference">Booking Reference</label>
+            <input type="text" id="bookingReference" placeholder="Example: AI123456">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="bookingStartDate">Departure / Check-in</label>
+                <input type="date" id="bookingStartDate">
+            </div>
+
+            <div class="form-group">
+                <label for="bookingEndDate">Arrival / Check-out</label>
+                <input type="date" id="bookingEndDate">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="bookingCost">Booking Cost (₹)</label>
+            <input type="number" id="bookingCost" min="0" placeholder="Enter amount">
+        </div>
+
+        <div class="form-group">
+            <label for="bookingNotes">Additional Details</label>
+            <textarea id="bookingNotes" rows="3"
+                placeholder="Terminal, hotel address, seat number or other details..."></textarea>
+        </div>
+
+        <button type="button" onclick="addTravelBooking()">
+            + Save Booking
+        </button>
+
+    </div>
+
+    <div class="booking-summary" id="bookingSummary"></div>
+
+    <h3 class="booking-list-heading">My Travel Reservations</h3>
+
+    <div id="bookingList" class="booking-grid"></div>
+
+</section>
+
+<!-- FEATURE 14: DIGITAL TRAVEL WALLET -->
+
+<section class="section" id="travelWallet">
+
+    <p class="eyebrow">YOUR ESSENTIALS, ALWAYS ORGANIZED</p>
+    <h2>Digital Travel Wallet</h2>
+    <p>Keep your important travel document details organized in one place.</p>
+
+    <div class="wallet-form">
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="walletType">Document Type</label>
+                <select id="walletType">
+                    <option value="Passport">Passport</option>
+                    <option value="Visa">Visa</option>
+                    <option value="Travel Insurance">Travel Insurance</option>
+                    <option value="Flight Ticket">Flight Ticket</option>
+                    <option value="Hotel Confirmation">Hotel Confirmation</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="walletTitle">Document Name</label>
+                <input type="text" id="walletTitle"
+                    placeholder="Example: My Passport">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="walletReference">Reference Number</label>
+            <input type="text" id="walletReference"
+                placeholder="Enter document or booking reference">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="walletIssueDate">Issue Date</label>
+                <input type="date" id="walletIssueDate">
+            </div>
+
+            <div class="form-group">
+                <label for="walletExpiryDate">Expiry Date</label>
+                <input type="date" id="walletExpiryDate">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="walletNotes">Additional Notes</label>
+            <textarea id="walletNotes" rows="3"
+                placeholder="Add useful document details..."></textarea>
+        </div>
+
+        <button type="button" id="walletSaveButton"
+            onclick="saveWalletDocument()">
+            + Add to Travel Wallet
+        </button>
+
+        <button type="button" id="walletCancelButton"
+            onclick="cancelWalletEdit()" style="display:none;">
+            Cancel Edit
+        </button>
+
+        <p class="wallet-warning">
+            Security reminder: Do not store passport scans, passwords,
+            payment card numbers or other highly sensitive information here.
+            This is a local browser organizer, not a secure document vault.
+        </p>
+
+    </div>
+
+    <div class="wallet-summary" id="walletSummary"></div>
+
+    <div class="wallet-search">
+        <input type="search" id="walletSearch"
+            placeholder="Search your travel documents...">
+    </div>
+
+    <div id="walletDocuments" class="wallet-grid"></div>
+
+</section>
+
+<!-- FEATURE 15: SMART TRAVEL CALENDAR -->
+
+<section class="section" id="travelCalendar">
+
+    <p class="eyebrow">PLAN EVERY MOMENT</p>
+    <h2>Smart Travel Calendar</h2>
+    <p>Schedule your trips, bookings and activities with your personal travel calendar.</p>
+
+    <div class="calendar-container">
+
+        <div class="calendar-header">
+            <button type="button" onclick="changeCalendarMonth(-1)">❮</button>
+            <h3 id="calendarMonthLabel">Month Year</h3>
+            <button type="button" onclick="changeCalendarMonth(1)">❯</button>
+        </div>
+
+        <div class="calendar-weekdays">
+            <span>Sun</span>
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+        </div>
+
+        <div id="calendarGrid" class="calendar-grid"></div>
+
+        <p class="calendar-legend">
+            <span>●</span> Scheduled travel events
+        </p>
+
+    </div>
+
+    <div class="calendar-event-form">
+
+        <h3 id="calendarFormHeading">Add Travel Event</h3>
+
+        <div class="form-group">
+            <label for="calendarEventTitle">Event Name</label>
+            <input type="text" id="calendarEventTitle"
+                placeholder="Example: Flight to Goa">
+        </div>
+
+        <div class="form-row">
+
+            <div class="form-group">
+                <label for="calendarEventDate">Event Date</label>
+                <input type="date" id="calendarEventDate">
+            </div>
+
+            <div class="form-group">
+                <label for="calendarEventTime">Event Time</label>
+                <input type="time" id="calendarEventTime">
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label for="calendarEventType">Event Category</label>
+            <select id="calendarEventType">
+                <option value="Trip">Trip</option>
+                <option value="Flight">Flight</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Activity">Activity</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="calendarEventNotes">Notes</label>
+            <textarea id="calendarEventNotes" rows="3"
+                placeholder="Add your travel details..."></textarea>
+        </div>
+
+        <button type="button" id="calendarSaveButton"
+            onclick="saveCalendarEvent()">
+            + Add Event
+        </button>
+
+        <button type="button" id="calendarCancelButton"
+            onclick="cancelCalendarEdit()" style="display:none;">
+            Cancel Edit
+        </button>
+
+    </div>
+
+    <div class="calendar-schedule">
+
+        <h3 id="calendarSelectedHeading">Scheduled Events</h3>
+
+        <div id="calendarEventList"></div>
+
+    </div>
+
+</section>
+
+<!-- FEATURE 16: ROUTE OPTIMIZER -->
+<section class="section" id="routeOptimizer">
+    <p class="eyebrow">TRAVEL SMARTER</p>
+    <h2>Smart Route Optimizer</h2>
+    <p>Choose your starting point and destinations to calculate an efficient travel order.</p>
+
+    <div class="route-form">
+        <div class="form-group">
+            <label for="routeStart">Starting Destination</label>
+            <select id="routeStart">
+                <option value="Goa">Goa</option>
+                <option value="Jaipur">Jaipur</option>
+                <option value="Manali">Manali</option>
+                <option value="Paris">Paris</option>
+                <option value="Bali">Bali</option>
+                <option value="Tokyo">Tokyo</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Select Places to Visit</label>
+            <div class="route-options">
+                <label><input type="checkbox" value="Goa"> Goa</label>
+                <label><input type="checkbox" value="Jaipur"> Jaipur</label>
+                <label><input type="checkbox" value="Manali"> Manali</label>
+                <label><input type="checkbox" value="Paris"> Paris</label>
+                <label><input type="checkbox" value="Bali"> Bali</label>
+                <label><input type="checkbox" value="Tokyo"> Tokyo</label>
+            </div>
+        </div>
+
+        <button type="button" class="generate-btn" onclick="calculateOptimizedRoute()">
+            Optimize My Route
+        </button>
+    </div>
+
+    <div id="routeResults"></div>
+
+    <div class="route-map-wrapper">
+        <h3>Your Optimized Route Map</h3>
+        <div id="routeOptimizerMap"></div>
+    </div>
+</section>
+
+
+<!-- FEATURE 17: FLIGHT AND HOTEL SEARCH -->
+<section class="section" id="flightHotel">
+    <p class="eyebrow">PLAN YOUR JOURNEY</p>
+    <h2>Flight & Hotel Search</h2>
+    <p>Find flights and accommodation for your next adventure.</p>
+
+    <div class="flight-search-card">
+        <h3>✈ Search Flights</h3>
+
+        <div class="flight-form-grid">
+            <div class="form-group">
+                <label for="flightOrigin">From</label>
+                <input id="flightOrigin" type="text"
+                    placeholder="Example: Bengaluru" required>
+            </div>
+
+            <div class="form-group">
+                <label for="flightDestination">To</label>
+                <input id="flightDestination" type="text"
+                    placeholder="Example: Goa" required>
+            </div>
+
+            <div class="form-group">
+                <label for="flightDeparture">Departure Date</label>
+                <input id="flightDeparture" type="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="flightReturn">Return Date</label>
+                <input id="flightReturn" type="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="flightTravellers">Travellers</label>
+                <input id="flightTravellers" type="number"
+                    min="1" max="20" value="1">
+            </div>
+        </div>
+
+        <button type="button" class="generate-btn"
+            onclick="searchTravelFlights()">
+            Search Flights →
+        </button>
+    </div>
+
+    <div class="flight-search-card">
+        <h3>🏨 Search Hotels</h3>
+
+        <div class="flight-form-grid">
+            <div class="form-group">
+                <label for="hotelDestination">Destination</label>
+                <input id="hotelDestination" type="text"
+                    placeholder="Enter city or destination">
+            </div>
+
+            <div class="form-group">
+                <label for="hotelCheckin">Check-in</label>
+                <input id="hotelCheckin" type="date">
+            </div>
+
+            <div class="form-group">
+                <label for="hotelCheckout">Check-out</label>
+                <input id="hotelCheckout" type="date">
+            </div>
+
+            <div class="form-group">
+                <label for="hotelGuests">Guests</label>
+                <input id="hotelGuests" type="number"
+                    min="1" max="20" value="2">
+            </div>
+        </div>
+
+        <button type="button" class="generate-btn"
+            onclick="searchTravelHotels()">
+            Search Hotels →
+        </button>
+    </div>
+
+    <div id="travelSearchMessage"></div>
+</section>
+
+<!-- FEATURE 18: AI TRAVEL ASSISTANT -->
+<section class="section" id="travelAssistant">
+    <p class="eyebrow">YOUR PERSONAL TRAVEL COMPANION</p>
+    <h2>AI Travel Assistant</h2>
+    <p>Ask questions and get helpful travel planning suggestions.</p>
+
+    <div class="assistant-container">
+        <div class="assistant-header">
+            <div class="assistant-avatar">✈</div>
+            <div>
+                <h3>TravelVista Assistant</h3>
+                <p>Here to help plan your next adventure</p>
+            </div>
+            <span class="assistant-status">Online</span>
+        </div>
+
+        <div class="assistant-suggestions">
+            <button type="button" onclick="askTravelSuggestion('Suggest a 3-day trip to Goa')">🏝 Goa trip</button>
+            <button type="button" onclick="askTravelSuggestion('How can I save money while travelling?')">💰 Budget tips</button>
+            <button type="button" onclick="askTravelSuggestion('What should I pack for a beach trip?')">🎒 Packing tips</button>
+            <button type="button" onclick="askTravelSuggestion('Give me travel safety tips')">🛡 Safety tips</button>
+        </div>
+
+        <div id="assistantChat" class="assistant-chat" aria-live="polite">
+            <div class="chat-message assistant-message">
+                <strong>TravelVista Assistant</strong>
+                <p>Hello! 👋 I'm your travel planning companion. Ask me about destinations, budgets, itineraries, packing or travel safety!</p>
+            </div>
+        </div>
+
+        <div class="assistant-input-area">
+            <input
+                type="text"
+                id="assistantInput"
+                placeholder="Ask me anything about travelling..."
+                onkeydown="if(event.key === 'Enter') sendTravelMessage()"
+            >
+            <button type="button" onclick="sendTravelMessage()">Send ➤</button>
+        </div>
+
+        <button type="button" class="assistant-clear" onclick="clearTravelChat()">
+            Clear Conversation
+        </button>
+    </div>
+</section>
+
+<!-- FEATURE 19: TRAVEL ANALYTICS DASHBOARD -->
+<section class="section" id="travelAnalytics">
+    <p class="eyebrow">YOUR TRAVEL INSIGHTS</p>
+    <h2>Travel Analytics Dashboard</h2>
+    <p>Understand your travel activity, expenses and planning progress.</p>
+
+    <div class="analytics-summary">
+        <div class="analytics-card">
+            <span>✈️</span>
+            <h3 id="analyticsTrips">0</h3>
+            <p>Saved Trips</p>
+        </div>
+
+        <div class="analytics-card">
+            <span>🏨</span>
+            <h3 id="analyticsBookings">0</h3>
+            <p>Bookings</p>
+        </div>
+
+        <div class="analytics-card">
+            <span>📔</span>
+            <h3 id="analyticsJournal">0</h3>
+            <p>Journal Entries</p>
+        </div>
+
+        <div class="analytics-card">
+            <span>💰</span>
+            <h3 id="analyticsExpenses">₹0</h3>
+            <p>Total Expenses</p>
+        </div>
+    </div>
+
+    <div class="analytics-chart-grid">
+        <div class="analytics-chart-card">
+            <h3>Expense Breakdown</h3>
+            <canvas id="expenseAnalyticsChart"></canvas>
+            <p id="expenseChartMessage" class="analytics-message"></p>
+        </div>
+
+        <div class="analytics-chart-card">
+            <h3>Booking Categories</h3>
+            <canvas id="bookingAnalyticsChart"></canvas>
+            <p id="bookingChartMessage" class="analytics-message"></p>
+        </div>
+    </div>
+
+    <div class="analytics-chart-card analytics-overview">
+        <h3>Travel Overview</h3>
+        <div id="analyticsOverview"></div>
+        <button type="button" class="generate-btn"
+            onclick="refreshTravelAnalytics()">
+            ↻ Refresh Analytics
+        </button>
+    </div>
+</section>
+
+
+
+
+
+<footer>
+    <h2>✦ TravelVista</h2>
+    <p>Explore More. Plan Smarter. Travel Better.</p>
+    <p>© 2026 TravelVista</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
